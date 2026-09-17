@@ -105,6 +105,28 @@ tar czf /backup/quietwave-media-$(date +%F).tar.gz -C /opt/quietwave/data media
 
 ## Troubleshooting
 
+**Inbound messages vanish with no trace — nothing in Twilio's message log
+at all, and the sender's phone shows "sent".**
+
+Check whether the number belongs to a **Messaging Service**. A US long code
+sitting in a Messaging Service that has no registered A2P 10DLC campaign gets
+its traffic blocked, and inbound messages never become Message records — so
+there is nothing in the logs to find, and no webhook fires.
+
+```bash
+# list services and the numbers attached to them
+twilio api:messaging:v1:services:list
+```
+
+Remove the number from the service until you have a registered campaign.
+Setting the service's `use_inbound_webhook_on_number` to true does *not* fix
+this; membership itself is what triggers the block. Once you do register a
+campaign, the number goes back into the service as part of that process.
+
+This is easy to cause by accident: creating a Messaging Service is a commonly
+suggested first step for A2P registration, but attaching the number before the
+campaign is approved takes the number offline for inbound.
+
 **Inbound messages never arrive, Twilio's debugger shows 403.**
 `PUBLIC_BASE_URL` does not match the URL configured in Twilio. Twilio signs the
 exact URL it calls, and QUIETWAVE validates against `PUBLIC_BASE_URL` plus the

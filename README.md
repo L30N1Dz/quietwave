@@ -174,7 +174,15 @@ and Twilio-originated SMS counts as A2P even when a human is typing every word.
 
 If messages send successfully but never arrive, or you see error **30007** or
 **30034** on a message, the number needs A2P 10DLC brand and campaign
-registration in the Twilio console. This is a Twilio/carrier requirement and
+registration in the Twilio console.
+
+A related trap, learned the hard way: **do not attach the number to a
+Messaging Service until its campaign is actually registered.** A US long code
+in a campaign-less Messaging Service is blocked in *both* directions, and
+inbound messages are dropped before they become Message records — so Twilio's
+logs show nothing at all and the sender's phone still reports "sent". If
+inbound stops dead and the logs are empty, check Messaging Service membership
+first. This is a Twilio/carrier requirement and
 nothing in this codebase can work around it. QUIETWAVE surfaces both error
 codes with a plain-English explanation rather than a bare number.
 
