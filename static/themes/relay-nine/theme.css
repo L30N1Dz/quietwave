@@ -1,0 +1,93 @@
+/* ==========================================================================
+   RELAY NINE — derelict deep-space comms relay.
+
+   Ice cyan on deep navy, soft rounded panels, a faint star grid. Reads like
+   ship instrumentation: calm, cold, and a very long way from anyone.
+   ========================================================================== */
+
+:root {
+  /* ---- surfaces ---- */
+  --bg:            #060b18;
+  --bg-elev:       #0a1122;
+  --bg-sunken:     #04070f;
+  --line:          rgba(125, 226, 255, .15);
+  --hairline:      1px;
+  --scrim:         rgba(2, 5, 12, .8);
+  --unread-bg:     rgba(125, 226, 255, .05);
+
+  /* ---- text ---- */
+  --fg:            #d6e6f5;
+  --fg-dim:        #8aa3bf;
+  --fg-faint:      #5b7391;
+
+  /* ---- accent ---- */
+  --accent:        #7de2ff;
+  --accent-bright: #a8eeff;
+  --accent-fg:     #021018;
+
+  /* ---- message bubbles ---- */
+  --in-bg:         #101b30;
+  --in-fg:         #d6e6f5;
+  --in-line:       rgba(125, 226, 255, .12);
+  --out-bg:        #12324a;
+  --out-fg:        #dff4ff;
+  --out-line:      rgba(125, 226, 255, .34);
+
+  /* ---- signal states ---- */
+  --ok:            #5fe3b0;
+  --warn:          #ffd479;
+  --danger:        #ff6b81;
+
+  /* ---- type ---- */
+  --font-mono:    ui-monospace, "SFMono-Regular", "Cascadia Mono", "Roboto Mono",
+                  Menlo, Consolas, "Liberation Mono", monospace;
+  --font-ui:      system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: var(--font-mono);
+
+  --weight-display:   600;
+  --tracking-display: .22em;
+  --tracking-mono:    .12em;
+  --tracking-ui:      .01em;
+  --size-title:       15px;
+  --transform-meta:   uppercase;
+  --transform-button: uppercase;
+
+  /* ---- geometry: soft, instrument-panel rounding ---- */
+  --radius-sm:          9px;
+  --radius-lg:          18px;
+  --radius-input:       21px;
+  --mark-radius:        50%;
+  --bubble-in-radius:   16px 16px 16px 5px;
+  --bubble-out-radius:  16px 16px 5px 16px;
+
+  /* ---- cold light ---- */
+  --glow-accent: 0 0 16px rgba(125, 226, 255, .22);
+  --glow-text:   0 0 18px rgba(125, 226, 255, .28);
+  --bar-shadow:  0 1px 0 rgba(125, 226, 255, .07);
+
+  /* ---- star field ---- */
+  --texture: radial-gradient(circle at 50% 50%,
+               rgba(125, 226, 255, .55) 0.5px, transparent 0.6px);
+  --texture-size:    46px 46px;
+  --texture-opacity: .30;
+  --texture-blend:   screen;
+}
+
+/* Concentric rings read as a dish tracking something far away. */
+.lock__mark { border-width: 1px; position: relative; }
+.lock__mark::before,
+.lock__mark::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+  opacity: .22;
+  animation: ring 4s ease-out infinite;
+}
+.lock__mark::after { animation-delay: 2s; }
+
+@keyframes ring {
+  0%   { transform: scale(.55); opacity: .5; }
+  100% { transform: scale(1.5); opacity: 0; }
+}

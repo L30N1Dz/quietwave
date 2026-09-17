@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="__THEME_ID__">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0a0a0a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="QUIETWAVE">
+<title>QUIETWAVE</title>
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/static/icons/icon-192.png" sizes="192x192" type="image/png">
+<link rel="apple-touch-icon" href="/static/icons/icon-192.png">
+<link rel="stylesheet" href="/static/css/base.css">
+<link rel="stylesheet" href="/static/themes/__THEME_ID__/theme.css" id="theme-sheet">
+</head>
+<body>
+
+<div class="carrier" aria-hidden="true"></div>
+
+<!-- ================= LOCKED ================= -->
+<section class="screen screen--locked" id="screen-locked" hidden>
+  <form class="lock" id="lock-form" autocomplete="off">
+    <div class="lock__mark" aria-hidden="true">
+      <span class="lock__pulse"></span>
+    </div>
+    <h1 class="lock__name" data-lex="app.name">QUIETWAVE</h1>
+    <p class="lock__tagline" data-lex="auth.title">RESTRICTED FREQUENCY</p>
+    <label class="lock__label" for="passphrase" data-lex="auth.prompt">STATION PASSPHRASE</label>
+    <input class="lock__input" id="passphrase" type="password" name="passphrase"
+           autocomplete="current-password" required
+           enterkeyhint="go" spellcheck="false">
+    <button class="btn btn--primary lock__submit" type="submit" data-lex="auth.submit">OPEN STATION</button>
+    <p class="lock__error" id="lock-error" role="alert" hidden></p>
+  </form>
+</section>
+
+<!-- ================= CHANNEL LIST ================= -->
+<section class="screen screen--list" id="screen-list" hidden>
+  <header class="bar">
+    <div class="bar__identity">
+      <h1 class="bar__name" data-lex="app.name">QUIETWAVE</h1>
+      <p class="bar__sub" id="list-subtitle" data-lex="app.tagline">STATION ACTIVE</p>
+    </div>
+    <div class="bar__actions">
+      <button class="icon-btn" id="btn-settings" type="button"
+              data-lex-title="nav.settings" title="Station">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-sliders"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="list" id="thread-list" role="list"></div>
+
+  <div class="empty" id="list-empty" hidden>
+    <p class="empty__title" data-lex="list.empty.title">NO ACTIVE CHANNELS</p>
+    <p class="empty__body" data-lex="list.empty.body">Open a channel to begin.</p>
+  </div>
+
+  <button class="fab" id="btn-new" type="button" data-lex-title="nav.new" title="New channel">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-plus"/></svg>
+  </button>
+</section>
+
+<!-- ================= THREAD ================= -->
+<section class="screen screen--thread" id="screen-thread" hidden>
+  <header class="bar bar--thread">
+    <button class="icon-btn" id="btn-back" type="button" data-lex-title="nav.back" title="Back">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-back"/></svg>
+    </button>
+    <div class="bar__identity bar__identity--tight">
+      <h1 class="bar__name" id="thread-title">—</h1>
+      <p class="bar__sub" id="thread-number"></p>
+    </div>
+    <button class="icon-btn" id="btn-thread-menu" type="button"
+            data-lex-title="thread.menu" title="Channel options">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-dots"/></svg>
+    </button>
+  </header>
+
+  <div class="log" id="message-log"></div>
+
+  <div class="jump" id="jump-latest" hidden>
+    <button class="jump__btn" type="button" data-lex="thread.jump">LATEST</button>
+  </div>
+
+  <form class="composer" id="composer">
+    <div class="composer__attachments" id="attachment-strip" hidden></div>
+    <div class="composer__row">
+      <button class="icon-btn icon-btn--composer" id="btn-attach" type="button"
+              data-lex-title="thread.attach" title="Attach">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-clip"/></svg>
+      </button>
+      <input type="file" id="file-input" accept="image/*,video/mp4" multiple hidden>
+      <textarea class="composer__input" id="composer-input" rows="1"
+                data-lex-placeholder="thread.placeholder"
+                placeholder="Type transmission..."
+                enterkeyhint="send"></textarea>
+      <button class="btn btn--send" id="btn-send" type="submit" disabled>
+        <span data-lex="thread.send">TRANSMIT</span>
+      </button>
+    </div>
+  </form>
+</section>
+
+<!-- ================= NEW CHANNEL ================= -->
+<div class="sheet-backdrop" id="sheet-new" hidden>
+  <form class="sheet" id="new-form" autocomplete="off">
+    <h2 class="sheet__title" data-lex="new.title">OPEN CHANNEL</h2>
+    <label class="field">
+      <span class="field__label" data-lex="new.number">CALLSIGN NUMBER</span>
+      <input class="field__input" id="new-number" type="tel" inputmode="tel"
+             required placeholder="(555) 123-4567" autocomplete="off">
+    </label>
+    <label class="field">
+      <span class="field__label" data-lex="new.label">CALLSIGN</span>
+      <input class="field__input" id="new-label" type="text" maxlength="80"
+             autocomplete="off" spellcheck="false">
+    </label>
+    <p class="sheet__error" id="new-error" role="alert" hidden></p>
+    <div class="sheet__actions">
+      <button class="btn" type="button" data-close-sheet data-lex="new.cancel">ABORT</button>
+      <button class="btn btn--primary" type="submit" data-lex="new.submit">OPEN</button>
+    </div>
+  </form>
+</div>
+
+<!-- ================= CHANNEL OPTIONS ================= -->
+<div class="sheet-backdrop" id="sheet-thread" hidden>
+  <form class="sheet" id="thread-form" autocomplete="off">
+    <h2 class="sheet__title" data-lex="edit.title">CHANNEL</h2>
+    <label class="field">
+      <span class="field__label" data-lex="new.label">CALLSIGN</span>
+      <input class="field__input" id="edit-label" type="text" maxlength="80"
+             autocomplete="off" spellcheck="false">
+    </label>
+    <div class="sheet__actions">
+      <button class="btn" type="button" data-close-sheet data-lex="new.cancel">ABORT</button>
+      <button class="btn btn--primary" type="submit" data-lex="edit.save">SAVE</button>
+    </div>
+    <button class="btn btn--danger sheet__danger" id="btn-delete-thread" type="button"
+            data-lex="edit.delete">CLOSE CHANNEL PERMANENTLY</button>
+  </form>
+</div>
+
+<!-- ================= SETTINGS ================= -->
+<div class="sheet-backdrop" id="sheet-settings" hidden>
+  <div class="sheet">
+    <h2 class="sheet__title" data-lex="settings.title">STATION</h2>
+
+    <div class="field">
+      <span class="field__label" data-lex="settings.line">TRANSMITTING AS</span>
+      <p class="field__static" id="settings-line">—</p>
+    </div>
+
+    <div class="field">
+      <span class="field__label" data-lex="settings.theme">BAND</span>
+      <div class="themes" id="theme-picker" role="radiogroup"></div>
+    </div>
+
+    <button class="btn btn--wide" id="btn-install" type="button" hidden
+            data-lex="settings.install">INSTALL TO HOME SCREEN</button>
+
+    <div class="sheet__actions">
+      <button class="btn" type="button" data-close-sheet data-lex="settings.close">CLOSE</button>
+      <button class="btn btn--danger" id="btn-logout" type="button"
+              data-lex="settings.logout">CLOSE STATION</button>
+    </div>
+    <p class="sheet__meta" id="settings-meta"></p>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<!-- icon sprite -->
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <symbol id="ico-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="ico-back" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></symbol>
+  <symbol id="ico-dots" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></symbol>
+  <symbol id="ico-sliders" viewBox="0 0 24 24"><path d="M4 8h10M18 8h2M4 16h4M12 16h8"/><circle cx="16" cy="8" r="2"/><circle cx="10" cy="16" r="2"/></symbol>
+  <symbol id="ico-clip" viewBox="0 0 24 24"><path d="M21 11l-8.5 8.5a4.5 4.5 0 01-6.4-6.4L14 5.2a3 3 0 014.2 4.2l-8.4 8.4a1.5 1.5 0 01-2.1-2.1l7.8-7.8"/></symbol>
+  <symbol id="ico-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+</svg>
+
+<script type="module" src="/static/js/app.js"></script>
+</body>
+</html>

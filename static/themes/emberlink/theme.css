@@ -1,0 +1,88 @@
+/* ==========================================================================
+   EMBERLINK — scavenged radio mesh, some years after the grid went down.
+
+   Ember orange and bone on charred brown. Condensed type, warm and a little
+   hand-made. The least institutional of the four: this is kit someone built
+   themselves out of what was left.
+   ========================================================================== */
+
+:root {
+  /* ---- surfaces ---- */
+  --bg:            #14100e;
+  --bg-elev:       #1c1714;
+  --bg-sunken:     #0e0b09;
+  --line:          rgba(237, 228, 211, .13);
+  --hairline:      1px;
+  --scrim:         rgba(10, 7, 5, .8);
+  --unread-bg:     rgba(232, 102, 60, .06);
+
+  /* ---- text ---- */
+  --fg:            #ede4d3;
+  --fg-dim:        #b3a48d;
+  --fg-faint:      #7d705e;
+
+  /* ---- accent ---- */
+  --accent:        #e8663c;
+  --accent-bright: #ff7d52;
+  --accent-fg:     #170905;
+
+  /* ---- message bubbles ---- */
+  --in-bg:         #221c18;
+  --in-fg:         #ede4d3;
+  --in-line:       rgba(237, 228, 211, .10);
+  --out-bg:        #3a1d12;
+  --out-fg:        #ffd0bb;
+  --out-line:      rgba(232, 102, 60, .36);
+
+  /* ---- signal states ---- */
+  --ok:            #9bbf6a;
+  --warn:          #e8a33c;
+  --danger:        #e8563c;
+
+  /* ---- type ---- */
+  --font-mono:    ui-monospace, "SFMono-Regular", "Cascadia Mono", "Roboto Mono",
+                  Menlo, Consolas, "Liberation Mono", monospace;
+  --font-ui:      "Roboto Condensed", "Arial Narrow", "Segoe UI", system-ui, sans-serif;
+  --font-display: var(--font-mono);
+
+  --weight-display:   700;
+  --tracking-display: .18em;
+  --tracking-mono:    .11em;
+  --tracking-ui:      .01em;
+  --size-title:       16px;
+  --transform-meta:   uppercase;
+  --transform-button: uppercase;
+
+  /* ---- geometry: slightly knocked-about ---- */
+  --radius-sm:          5px;
+  --radius-lg:          12px;
+  --radius-input:       6px;
+  --mark-radius:        50%;
+  --bubble-in-radius:   4px 11px 11px 11px;
+  --bubble-out-radius:  11px 4px 11px 11px;
+
+  /* ---- firelight ---- */
+  --glow-accent: 0 0 13px rgba(232, 102, 60, .24);
+  --glow-text:   0 0 10px rgba(232, 102, 60, .18);
+  --bar-shadow:  0 1px 0 rgba(237, 228, 211, .05);
+
+  /* ---- grain ---- */
+  --texture: repeating-linear-gradient(
+               27deg,
+               rgba(237, 228, 211, .035) 0px,
+               rgba(237, 228, 211, .035) 1px,
+               transparent 1px,
+               transparent 4px
+             );
+  --texture-opacity: .55;
+  --texture-blend:   overlay;
+}
+
+/* An ember that breathes, rather than a machine that pulses. */
+.lock__pulse {
+  box-shadow: 0 0 16px 3px rgba(232, 102, 60, .5);
+  animation-duration: 3.4s;
+}
+
+/* Kit built out of salvage does not have a machined bezel. */
+.lock__mark { border-style: dashed; }

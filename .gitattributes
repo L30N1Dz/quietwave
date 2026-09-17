@@ -1,0 +1,5 @@
+# Normalise to LF in the repository; check out native on Windows.
+* text=auto eol=lf
+
+*.png binary
+*.service text eol=lf

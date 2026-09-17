@@ -1,0 +1,90 @@
+/* ==========================================================================
+   NEONWIRE — corporate-issue comms terminal, somewhere in the megacity.
+
+   Magenta and cyan on near-black violet, hard edges, heavy bloom. The
+   bureaucratic one: it never stops implying that this conversation is
+   licensed rather than private.
+   ========================================================================== */
+
+:root {
+  /* ---- surfaces ---- */
+  --bg:            #0b0711;
+  --bg-elev:       #130c1d;
+  --bg-sunken:     #070410;
+  --line:          rgba(255, 46, 136, .18);
+  --hairline:      1px;
+  --scrim:         rgba(5, 2, 10, .82);
+  --unread-bg:     rgba(255, 46, 136, .06);
+
+  /* ---- text ---- */
+  --fg:            #e9e2f5;
+  --fg-dim:        #a796c2;
+  --fg-faint:      #6f6191;
+
+  /* ---- accent ---- */
+  --accent:        #ff2e88;
+  --accent-bright: #ff5ba3;
+  --accent-fg:     #12000a;
+
+  /* ---- bubbles: inbound magenta-lit, outbound on the cyan channel ---- */
+  --in-bg:         #1b1027;
+  --in-fg:         #e9e2f5;
+  --in-line:       rgba(255, 46, 136, .20);
+  --out-bg:        #06232c;
+  --out-fg:        #9ff4ff;
+  --out-line:      rgba(0, 229, 255, .42);
+
+  /* ---- signal states ---- */
+  --ok:            #00e5ff;
+  --warn:          #ffc53d;
+  --danger:        #ff3b5c;
+
+  /* ---- type ---- */
+  --font-mono:    ui-monospace, "SFMono-Regular", "Cascadia Mono", "Roboto Mono",
+                  Menlo, Consolas, "Liberation Mono", monospace;
+  --font-ui:      system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: var(--font-mono);
+
+  --weight-display:   700;
+  --tracking-display: .30em;
+  --tracking-mono:    .15em;
+  --tracking-ui:      .01em;
+  --size-title:       14px;
+  --transform-meta:   uppercase;
+  --transform-button: uppercase;
+
+  /* ---- geometry: chamfered, machine-cut ---- */
+  --radius-sm:          3px;
+  --radius-lg:          3px;
+  --radius-input:       3px;
+  --mark-radius:        3px;
+  --bubble-in-radius:   3px;
+  --bubble-out-radius:  3px;
+
+  /* ---- heavy bloom ---- */
+  --glow-accent: 0 0 20px rgba(255, 46, 136, .35);
+  --glow-text:   0 0 16px rgba(255, 46, 136, .45);
+  --bar-shadow:  0 1px 0 rgba(0, 229, 255, .16);
+
+  /* ---- data grid ---- */
+  --texture: repeating-linear-gradient(
+               90deg,
+               rgba(0, 229, 255, .05) 0px,
+               rgba(0, 229, 255, .05) 1px,
+               transparent 1px,
+               transparent 44px
+             );
+  --texture-opacity: .7;
+  --texture-blend:   screen;
+}
+
+/* Outbound traffic rides the cyan channel, so its meta line matches. */
+.msg--out .msg__meta { color: rgba(0, 229, 255, .55); }
+
+/* Corporate hardware does not have round corners. */
+.lock__mark {
+  border-width: 1px;
+  box-shadow: 0 0 24px rgba(255, 46, 136, .3),
+              inset 0 0 18px rgba(255, 46, 136, .12);
+}
+.bar { border-bottom-color: rgba(0, 229, 255, .18); }

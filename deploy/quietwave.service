@@ -1,0 +1,54 @@
+# QUIETWAVE — systemd unit
+#
+#   sudo cp deploy/quietwave.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now quietwave
+#   systemctl status quietwave
+#   journalctl -u quietwave -f
+#
+# Adjust User, WorkingDirectory and ExecStart to match your install.
+
+[Unit]
+Description=QUIETWAVE — SMS/MMS station for a Twilio number
+Documentation=https://github.com/L30N1Dz/quietwave
+After=network-online.target mongod.service
+Wants=network-online.target
+
+[Service]
+Type=exec
+User=quietwave
+Group=quietwave
+WorkingDirectory=/opt/quietwave
+
+# .env is read by the app itself via pydantic-settings, so it is not listed as
+# an EnvironmentFile here. Keep it mode 600 and owned by the service user.
+ExecStart=/usr/local/bin/uv run --frozen python -m app.cli serve
+
+Restart=on-failure
+RestartSec=5s
+TimeoutStopSec=20s
+
+# ---- hardening -----------------------------------------------------------
+# The service needs to read its own directory and write downloaded
+# attachments; it has no business anywhere else on the filesystem.
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+RestrictRealtime=true
+LockPersonality=true
+MemoryDenyWriteExecute=false
+
+# Attachment storage. Add any other writable path here if you move MEDIA_ROOT.
+ReadWritePaths=/opt/quietwave/data
+
+# Bound to localhost; Cloudflare Tunnel provides the public edge.
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+
+[Install]
+WantedBy=multi-user.target

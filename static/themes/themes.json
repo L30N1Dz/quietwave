@@ -1,0 +1,28 @@
+{
+  "themes": [
+    {
+      "id": "quietwave",
+      "name": "QUIETWAVE",
+      "description": "Numbers station. Amber on black.",
+      "swatch": { "bg": "#0a0a0a", "accent": "#ffb000" }
+    },
+    {
+      "id": "relay-nine",
+      "name": "RELAY NINE",
+      "description": "Deep-space relay. Ice on navy.",
+      "swatch": { "bg": "#060b18", "accent": "#7de2ff" }
+    },
+    {
+      "id": "emberlink",
+      "name": "EMBERLINK",
+      "description": "Scavenged mesh. Ember on char.",
+      "swatch": { "bg": "#14100e", "accent": "#e8663c" }
+    },
+    {
+      "id": "neonwire",
+      "name": "NEONWIRE",
+      "description": "Megacorp terminal. Neon on violet.",
+      "swatch": { "bg": "#0b0711", "accent": "#ff2e88" }
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+/* ==========================================================================
+   QUIETWAVE — clandestine shortwave numbers station.
+
+   Amber phosphor on dead black. Everything square, everything monospaced,
+   faint scanlines over the top. The reference is a CRT terminal in a room
+   nobody is supposed to know about.
+   ========================================================================== */
+
+:root {
+  /* ---- surfaces ---- */
+  --bg:            #0a0a0a;
+  --bg-elev:       #111110;
+  --bg-sunken:     #070706;
+  --line:          rgba(255, 176, 0, .17);
+  --hairline:      1px;
+  --scrim:         rgba(4, 3, 0, .78);
+  --unread-bg:     rgba(255, 176, 0, .045);
+
+  /* ---- text ---- */
+  --fg:            #e8d9b8;
+  --fg-dim:        #a08f6e;
+  --fg-faint:      #6b6250;
+
+  /* ---- accent ---- */
+  --accent:        #ffb000;
+  --accent-bright: #ffc63d;
+  --accent-fg:     #120c00;
+
+  /* ---- message bubbles ---- */
+  --in-bg:         #17150f;
+  --in-fg:         #e8d9b8;
+  --in-line:       rgba(255, 176, 0, .16);
+  --out-bg:        #241900;
+  --out-fg:        #ffcf66;
+  --out-line:      rgba(255, 176, 0, .42);
+
+  /* ---- signal states ---- */
+  --ok:            #8fd14f;
+  --warn:          #ffb000;
+  --danger:        #ff5a3c;
+
+  /* ---- type ---- */
+  --font-mono:    ui-monospace, "SFMono-Regular", "Cascadia Mono", "Roboto Mono",
+                  Menlo, Consolas, "Liberation Mono", monospace;
+  --font-ui:      var(--font-mono);      /* a terminal is monospaced throughout */
+  --font-display: var(--font-mono);
+
+  --weight-display:   700;
+  --tracking-display: .26em;
+  --tracking-mono:    .14em;
+  --tracking-ui:      .02em;
+  --size-title:       15px;
+  --transform-meta:   uppercase;
+  --transform-button: uppercase;
+
+  /* ---- geometry: hard edges, no softness anywhere ---- */
+  --radius-sm:          2px;
+  --radius-lg:          2px;
+  --radius-input:       2px;
+  --mark-radius:        2px;
+  --bubble-in-radius:   2px;
+  --bubble-out-radius:  2px;
+
+  /* ---- phosphor bloom ---- */
+  --glow-accent: 0 0 14px rgba(255, 176, 0, .28);
+  --glow-text:   0 0 12px rgba(255, 176, 0, .35);
+  --bar-shadow:  0 1px 0 rgba(255, 176, 0, .08);
+
+  /* ---- scanlines ---- */
+  --texture: repeating-linear-gradient(
+               0deg,
+               rgba(0, 0, 0, .34) 0px,
+               rgba(0, 0, 0, .34) 1px,
+               transparent 1px,
+               transparent 3px
+             );
+  --texture-opacity: .38;
+  --texture-blend:   normal;
+}
+
+/* The station mark reads as a broadcast dish rather than a plain box. */
+.lock__mark {
+  border-width: 2px;
+  position: relative;
+}
+.lock__mark::before,
+.lock__mark::after {
+  content: "";
+  position: absolute;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+  opacity: .30;
+}
+.lock__mark::before { inset: 10px; }
+.lock__mark::after  { inset: 19px; opacity: .5; }
+
+/* Callsign sigils get the boxed-designator look. */
+.row__sigil { font-weight: 700; letter-spacing: .02em; }

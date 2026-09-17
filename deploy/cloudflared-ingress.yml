@@ -1,0 +1,36 @@
+# Cloudflare Tunnel ingress — snippet, not a complete config file.
+#
+# Merge the `hostname` block below into the `ingress:` list of your existing
+# /etc/cloudflared/config.yml, ABOVE the catch-all `service: http_status:404`
+# rule. Ingress rules are matched in order and the catch-all must stay last.
+#
+# If you already run a tunnel for other services, do NOT replace that file —
+# add one entry to it.
+
+tunnel: YOUR-TUNNEL-ID
+credentials-file: /etc/cloudflared/YOUR-TUNNEL-ID.json
+
+ingress:
+  # ---- QUIETWAVE ---------------------------------------------------------
+  - hostname: text.example.com
+    service: http://127.0.0.1:8090
+    originRequest:
+      # Inbound MMS webhooks can carry several attachments; the default 30s
+      # is tight when Twilio is also slow to hand them over.
+      connectTimeout: 30s
+      noTLSVerify: false
+
+  # ---- your existing services stay here ----------------------------------
+
+  # ---- catch-all, must remain last ---------------------------------------
+  - service: http_status:404
+
+# After editing:
+#
+#   cloudflared tunnel route dns YOUR-TUNNEL-ID text.example.com
+#   sudo systemctl restart cloudflared
+#   curl https://text.example.com/healthz
+#
+# That last command should return {"status":"ok",...}. If it does not, fix it
+# before touching the Twilio console — Twilio cannot deliver to a hostname that
+# does not resolve to a running app.

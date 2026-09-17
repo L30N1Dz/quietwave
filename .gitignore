@@ -1,0 +1,38 @@
+# ---- secrets: never commit anything in here ----
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets/
+vapid_*.json
+
+# ---- runtime data (messages, downloaded media, sessions) ----
+data/
+media/
+*.sqlite
+*.db
+
+# ---- python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+dist/
+build/
+# uv.lock IS committed: this is an application, and deploy/ installs --frozen
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# ---- editors / os ----
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+
+# claude code local dev config
+.claude/
