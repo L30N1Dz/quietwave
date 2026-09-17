@@ -246,3 +246,34 @@ async def test_bad_after_cursor_is_a_400(signed_in, thread):
         f"/api/threads/{thread['id']}/messages", params={"after": "yesterday-ish"}
     )
     assert response.status_code == 400
+
+
+async def test_unknown_line_id_says_so(signed_in, line):
+    """A bad line_id used to blame the operator's setup instead of the input."""
+    response = await signed_in.post(
+        "/api/threads",
+        json={"counterpart_number": "+15552220000", "line_id": "no-such-line"},
+    )
+    assert response.status_code == 404
+    assert response.json()["detail"] == "No such line."
+
+
+async def test_missing_static_file_is_a_real_404(client):
+    """Returning the HTML shell here would let the service worker cache
+    HTML under a .css URL."""
+    response = await client.get("/static/css/does-not-exist.css")
+    assert response.status_code == 404
+    assert "<!DOCTYPE html>" not in response.text
+
+
+async def test_route_404s_keep_their_own_message(signed_in):
+    """The SPA fallback must not flatten every 404 into 'Not found.'"""
+    response = await signed_in.get("/api/threads/nope/messages")
+    assert response.status_code == 404
+    assert response.json()["detail"] == "No such conversation."
+
+
+async def test_unknown_page_serves_the_app_shell(client):
+    response = await client.get("/somewhere/she/bookmarked")
+    assert response.status_code == 200
+    assert "<!DOCTYPE html>" in response.text

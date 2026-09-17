@@ -12,8 +12,9 @@ import logging
 from contextlib import asynccontextmanager
 from pathlib import Path
 
-from fastapi import FastAPI, Request
-from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
+from fastapi import FastAPI, Request, Response
+from fastapi.exception_handlers import http_exception_handler
+from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.sessions import SessionMiddleware
 
@@ -158,11 +159,21 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         )
 
     @app.exception_handler(404)
-    async def spa_fallback(request: Request, exc) -> JSONResponse | HTMLResponse:
-        # API 404s stay JSON; anything else gets the shell so a refresh on a
-        # client-side route does not dead-end.
-        if request.url.path.startswith(("/api/", "/webhooks/", "/m/", "/auth/")):
-            return JSONResponse({"detail": "Not found."}, status_code=404)
+    async def spa_fallback(request: Request, exc) -> Response:
+        # Machine-facing paths keep FastAPI's own handling, which preserves the
+        # detail the route raised -- "No such conversation." is a great deal
+        # more useful than a blanket "Not found.".
+        #
+        # /static/ is in this list deliberately: serving the HTML shell with a
+        # 200 for a missing stylesheet lets the service worker cache HTML under
+        # a .css URL, which is miserable to debug later.
+        if request.url.path.startswith(
+            ("/api/", "/webhooks/", "/m/", "/auth/", "/static/", "/healthz")
+        ):
+            return await http_exception_handler(request, exc)
+
+        # Anything else gets the shell, so a stray URL opens the app rather
+        # than dead-ending on a JSON blob.
         html = (STATIC_DIR / "index.html").read_text(encoding="utf-8")
         return HTMLResponse(html.replace("__THEME_ID__", settings.theme))
 

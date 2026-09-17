@@ -285,10 +285,17 @@ async function openThread(threadId) {
   composerInput.focus();
 }
 
+function isLocalOnly(message) {
+  return typeof message.id === 'string' && message.id.startsWith('temp-');
+}
+
 function latestServerTimestamp() {
+  // Only ever advance the polling cursor using timestamps the server issued.
+  // A locally-created message carries this device's clock, which may run
+  // ahead of the server's and would silently skip real inbound traffic.
   let latest = null;
   for (const message of state.messages) {
-    if (message._temp) continue;
+    if (isLocalOnly(message)) continue;
     if (!latest || message.created_at > latest) latest = message.created_at;
   }
   return latest;

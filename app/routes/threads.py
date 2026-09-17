@@ -99,18 +99,22 @@ async def create_thread(
             status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)
         ) from exc
 
-    line_id = payload.line_id
-    if line_id:
-        line = await store.get_line(line_id)
+    if payload.line_id:
+        line = await store.get_line(payload.line_id)
+        if line is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="No such line.",
+            )
     else:
         lines = await store.list_lines(active_only=True)
         line = lines[0] if lines else None
-    if line is None:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="No active line is configured. Add one with "
-            "'python -m app.cli add-line'.",
-        )
+        if line is None:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="No active line is configured. Add one with "
+                "'python -m app.cli add-line'.",
+            )
 
     if number == line["twilio_number"]:
         raise HTTPException(
