@@ -153,7 +153,15 @@ click the number you are activating. Scroll to **Messaging Configuration**.
 | Field | Value |
 |---|---|
 | A message comes in | **Webhook**, `HTTP POST`, `https://YOUR-DOMAIN/webhooks/twilio/sms` |
-| Status callback URL | `https://YOUR-DOMAIN/webhooks/twilio/status` |
+
+That is the only field to change.
+
+> **Do not set the number's "Status callback URL".** On a phone number that
+> field is the *voice* call status callback — the API groups it with
+> `voice_url` and `trunk_sid` — so setting it edits your voice configuration.
+> QUIETWAVE does not need it: delivery receipts are requested per message,
+> by passing a `StatusCallback` on each outbound send, which routes to
+> `/webhooks/twilio/status` without any number-level configuration.
 
 > **Leave Voice Configuration completely alone.** If that number points at a
 > SIP trunk or a PBX, it keeps doing so. Messaging and Voice are independent

@@ -73,7 +73,11 @@ In the Twilio console, on that number, under **Messaging Configuration** only:
 
 - **A message comes in** → Webhook, `HTTP POST`,
   `https://text.example.com/webhooks/twilio/sms`
-- **Status callback URL** → `https://text.example.com/webhooks/twilio/status`
+
+That is the only field to set. Leave the number's **Status callback URL**
+empty: on a phone number that field is the *voice* status callback, not a
+messaging one. Delivery receipts are requested per message on each outbound
+send, so they need no number-level configuration.
 
 **Do not touch Voice Configuration.** If the number routes voice to a SIP trunk
 or PBX, it keeps doing so — Twilio treats Voice and Messaging as independent

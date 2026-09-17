@@ -49,9 +49,14 @@ def cmd_check(args: argparse.Namespace) -> int:
     print(f"  signature check  {'on' if settings.validate_twilio_signature else 'OFF'}")
     print(f"  twilio creds     {'present' if settings.twilio_configured else 'MISSING'}")
 
-    _print_header("Point Twilio at these (Messaging Configuration only)")
+    _print_header("Point Twilio at this (Messaging Configuration only)")
     print(f"  A message comes in   POST  {settings.webhook_sms_url}")
-    print(f"  Status callback URL  POST  {settings.webhook_status_url}")
+    print()
+    print("  That is the ONLY field to change.")
+    print("  Do not set the number's 'Status callback URL' -- on a phone number")
+    print("  that is the VOICE status callback. Delivery receipts are requested")
+    print("  per message, and arrive at:")
+    print(f"    {settings.webhook_status_url}")
     print("  Leave Voice Configuration exactly as it is.")
 
     problems = settings.startup_problems()
